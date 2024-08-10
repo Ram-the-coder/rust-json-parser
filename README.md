@@ -1,5 +1,7 @@
 ```
 $ cargo run -q
-duration: 32ms
+read duration: 0ms
+build json duration: 8ms
+parse duration: 32ms
 num items: 3168
 ```

@@ -10,23 +10,29 @@ use json_parser::Json;
 use std::time::Instant;
 
 fn main() {
+    let mut json = String::new();
+    let start = Instant::now();
     match read_lines("./src/data/1mb.json") {
         Ok(lines) => {
-            let mut json = String::new();
+            println!("read duration: {}ms", start.elapsed().as_millis());
+
+            let start = Instant::now();
             for line in lines.flatten() {
                 json += line.as_str();
             }
-            let start = Instant::now();
-            let result = parse_json(json);
-            println!("duration: {}ms", start.elapsed().as_millis());
-            match result {
-                Json::Array(array) => {
-                    println!("num items: {}", array.len())
-                }
-                _ => panic!("was expecting array"),
-            }
+            println!("build json duration: {}ms", start.elapsed().as_millis());
         }
         Err(error) => panic!("{}", error),
+    }
+
+    let start = Instant::now();
+    let result = parse_json(json);
+    println!("parse duration: {}ms", start.elapsed().as_millis());
+    match result {
+        Json::Array(array) => {
+            println!("num items: {}", array.len())
+        }
+        _ => panic!("was expecting array"),
     }
 }
 
